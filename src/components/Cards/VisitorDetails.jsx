@@ -28,7 +28,7 @@ const VisitorDetails = () => {
   };
 
   return (
-    <div className="flex items-center justify-center text-3xl h-full bg-[#F5F5F5] md:pl-44 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
+    <div className="flex items-center justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
       <div className="rounded-md w-full h-full bg-white px-4 py-4 flex flex-col gap-5">
         <BackButton backTo="/visitor" />
         <div
