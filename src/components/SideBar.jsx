@@ -131,33 +131,33 @@ const SideBar = () => {
               isHomeActive ? "text-white" : "text-black"
             }`}
           >
-            <User size={20} />
-            <h2 className={`font-raleway font-semibold`}>Visitors</h2>
+            <Home size={20} />
+            <h2 className={`font-raleway font-semibold`}>Home</h2>
           </div>
         </Link>
-        <Link to={"/pre"}>
+        <Link to={"/visitor"}>
           <div
             className={`flex gap-1 flex-col items-center justify-center  rounded-md hover:bg-[#8B6200] px-1 py-1 cursor-pointer ${
-              location.pathname === "/pre" ? "text-white" : "text-black"
-            }`}
-          >
-            <Clock size={20} />
-            <h2 className={`font-raleway font-semibold text-wrap`}>
-              Pre-Registered
-            </h2>
-          </div>
-        </Link>
-
-        <Link to={"/notifications"}>
-          <div
-            className={`flex gap-1 flex-col items-center justify-center  rounded-md hover:bg-[#8B6200] px-1 py-1 cursor-pointer ${
-              location.pathname === "/notifications"
+              location.pathname.startsWith("/visitor")
                 ? "text-white"
                 : "text-black"
             }`}
           >
-            <Bell size={20} />
-            <h2 className={`font-raleway font-semibold`}>Notifications</h2>
+            <User size={20} />
+            <h2 className={`font-raleway font-semibold text-wrap`}>Visitors</h2>
+          </div>
+        </Link>
+
+        <Link to={"/visits"}>
+          <div
+            className={`flex gap-1 flex-col items-center justify-center  rounded-md hover:bg-[#8B6200] px-1 py-1 cursor-pointer ${
+              location.pathname.startsWith("/visits")
+                ? "text-white"
+                : "text-black"
+            }`}
+          >
+            <Clock size={20} />
+            <h2 className={`font-raleway font-semibold`}>Visits</h2>
           </div>
         </Link>
         <div className="flex gap-1 flex-col items-center justify-center  rounded-md hover:bg-[#8B6200] px-1 py-1 cursor-pointer">
