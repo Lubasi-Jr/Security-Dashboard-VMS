@@ -5,7 +5,7 @@ import VisitCard from "./Cards/VisitCard";
 
 const Home = () => {
   return (
-    <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-44 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
+    <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
       <div className="w-1/2 flex gap-9 items-start justify-start px-4 py-2">
         <button
           type="button"

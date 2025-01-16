@@ -8,53 +8,35 @@ import DropDown from "./Filters/DropDown";
 
 const Visits = () => {
   return (
-    <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-44 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
+    <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
       <div className="flex items-start justify-start">
         <h2 className="font-oxygen font-bold">Filter By:</h2>
       </div>
-      <div className="rounded-md w-1/2 h-auto bg-[#F5F5F5] px-4 py-4 flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
+      <div className="rounded-md w-full h-[80px]  px-4 py-4 flex items-start justify-start gap-3 ">
+        <div className="flex flex-col gap-1 w-[200px]">
           <DatePicker />
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="" className="text-base">
-            Purpose
-          </label>
-          {/* <input
-            placeholder="E.g Business"
-            type="text"
-            className="rounded-md focus:border-cecOrange focus:ring-cecOrange truncate w-[250px]"
-          /> */}
+        <div className="flex flex-col gap-1 w-[200px]">
+          <p className="text-base">Purpose</p>
           <DropDown />
         </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="" className="text-base">
-            Employee
-          </label>
+        <div className="flex flex-col gap-1 w-[210px]">
+          <p className="text-base">Name</p>
           <input
-            placeholder="E.g Michael Kors"
             type="text"
-            className="rounded-md focus:border-cecOrange focus:ring-cecOrange truncate w-[250px]"
+            placeholder="E.g Michael Musonda"
+            className="rounded-md px-1 py-1 focus:ring-cecOrange mt-1 focus:border-cecOrange w-[200px] h-[41px]"
           />
         </div>
-        <div className="flex items-center justify-center gap-6">
-          <button
-            type="button"
-            className="text-white w-1/2 hover:text-cecOrange border border-cecOrange bg-cecOrange hover:bg-white font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
-          >
-            <Search size={30} />
-            <p>Search</p>
-          </button>
-          <h2>OR</h2>
-          <button
-            type="button"
-            className="text-cecOrange w-1/2 hover:text-white border border-cecOrange bg-white hover:bg-cecOrange  font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
-          >
-            <Plus size={30} />
-            <p>Create New Visit</p>
-          </button>
-        </div>
+        <button className="w-[41px] bg-cecOrange h-[41px] text-md mt-8 rounded-full flex items-center justify-center px-1 py-4 text-white hover:bg-white hover:text-cecOrange">
+          <Search size={25} />
+        </button>
+        <h2 className="text-[25px] mt-8">OR</h2>
+        <button className="border border-cecOrange rounded-md px-2 py-2 w-[170px] text-base mt-8 font-semibold text-center h-[41px]  text-cecOrange hover:text-white hover:bg-cecOrange">
+          Create New Visit
+        </button>
       </div>
+
       <div className="rounded-md w-full h-full bg-[#F5F5F5] px-4 py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         <VisitCard id={1} />
       </div>

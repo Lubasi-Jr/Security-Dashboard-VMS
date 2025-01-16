@@ -10,14 +10,14 @@ const DatePicker = () => {
   }, []);
 
   return (
-    <div className="relative w-64">
+    <div className="relative w-[200px] z-20">
       <label
         htmlFor="datepicker"
         className="block text-base font-medium text-gray-700 "
       >
         Date
       </label>
-      <div className="relative mt-1">
+      <div className="relative mt-2">
         <input
           type="text"
           id="datepicker"

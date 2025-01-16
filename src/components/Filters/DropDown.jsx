@@ -13,7 +13,7 @@ const DropDown = () => {
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-cecOrange bg-white hover:bg-cecOrange hover:text-white focus:ring-cecOrange border border-cecOrange focus:outline-none font-medium rounded-lg text-sm w-[250px] px-5 py-2.5 text-center inline-flex items-center"
+        className="text-cecOrange bg-white hover:bg-cecOrange hover:text-white focus:ring-cecOrange border border-cecOrange focus:outline-none font-medium rounded-lg text-sm w-[200px] px-5 py-2.5 text-center inline-flex items-center"
         type="button"
       >
         {selected}
