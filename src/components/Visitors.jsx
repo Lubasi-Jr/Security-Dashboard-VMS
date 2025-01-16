@@ -10,7 +10,7 @@ const Visitors = () => {
         <h2 className="font-oxygen font-bold">Search By:</h2>
       </div>
 
-      <div className="rounded-md w-full h-[80px]  px-4 py-4 flex items-start justify-start gap-3 ">
+      <div className=" rounded-md w-full lg:h-[80px] h-auto  px-4 py-4 flex lg:flex-row lg:items-start lg:justify-start gap-3 flex-col justify-start items-start ">
         <div className="flex flex-col gap-1 w-[200px]">
           <p className="text-base">Name</p>
           <input

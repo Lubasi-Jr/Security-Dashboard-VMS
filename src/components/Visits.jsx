@@ -12,7 +12,7 @@ const Visits = () => {
       <div className="flex items-start justify-start">
         <h2 className="font-oxygen font-bold">Filter By:</h2>
       </div>
-      <div className="rounded-md w-full h-[80px]  px-4 py-4 flex items-start justify-start gap-3 ">
+      <div className="z-30 rounded-md w-full lg:h-[80px] h-auto  px-4 py-4 flex items-start justify-start flex-col lg:flex-row gap-3 ">
         <div className="flex flex-col gap-1 w-[200px]">
           <DatePicker />
         </div>
@@ -32,7 +32,7 @@ const Visits = () => {
           <Search size={25} />
         </button>
         <h2 className="text-[25px] mt-8">OR</h2>
-        <button className="border border-cecOrange rounded-md px-2 py-2 w-[170px] text-base mt-8 font-semibold text-center h-[41px]  text-cecOrange hover:text-white hover:bg-cecOrange">
+        <button className="border border-cecOrange rounded-md px-2 py-2 w-[170px]  lg:w-[250px] whitespace-nowrap text-base mt-8 font-semibold text-center h-[41px]  text-cecOrange hover:text-white hover:bg-cecOrange">
           Create New Visit
         </button>
       </div>

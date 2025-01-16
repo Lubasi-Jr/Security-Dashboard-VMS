@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        "custom-1024": "1024px",
+      },
       colors: {
         cecOrange: "#AD7900",
         cecRed: "#F10500",

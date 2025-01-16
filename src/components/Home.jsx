@@ -1,12 +1,27 @@
 import { div } from "motion/react-client";
 import { Plus, User, DoorOpen } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import VisitCard from "./Cards/VisitCard";
+import axios from "axios";
 
 const Home = () => {
+  const [allVisits, setAllVisits] = useState();
+  /* useEffect(() => {
+    getVisits();
+  }, []);
+
+  const getVisits = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/visits");
+      setAllVisits(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }; */
+
   return (
     <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
-      <div className="w-1/2 flex gap-9 items-start justify-start px-4 py-2">
+      <div className="lg:w-1/2 w-full flex flex-col lg:flex-row lg:gap-9 gap-2 items-start justify-start px-4 py-2">
         <button
           type="button"
           className="text-cecOrange w-1/2 hover:text-white border border-cecOrange bg-white hover:bg-cecOrange  font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"

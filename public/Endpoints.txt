@@ -1,0 +1,79 @@
+/api/visits [get]
+ 
+[
+  {
+    "visit_id": 0,
+    "purpose": "string",
+    "visit_date": "2025-01-16",
+    "check_in": "2025-01-16T14:17:27.090Z",
+    "check_out": "2025-01-16T14:17:27.090Z",
+    "time_in": "2025-01-16T14:17:27.090Z",
+    "time_out": "2025-01-16T14:17:27.090Z",
+    "verified_visit": true,
+    "motor_vehicle_registration": "string",
+    "employee_id": 0,
+    "visitor_id": 0,
+  }
+]
+ 
+/api/visits/{id} [get] 
+/api/visits/Search [get] ?purpose=""&?employee_id=""&?visitor_id=""&?date=""&
+ 
+ 
+  {
+    "visit_id": 0,
+    "purpose": "string",
+    "visit_date": "2025-01-16",
+    "check_in": "2025-01-16T14:17:27.090Z",
+    "check_out": "2025-01-16T14:17:27.090Z",
+    "time_in": "2025-01-16T14:17:27.090Z",
+    "time_out": "2025-01-16T14:17:27.090Z",
+    "verified_visit": true,
+    "motor_vehicle_registration": "string",
+    "employee_id": 0,
+    "visitor_id": 0,
+   }
+ 
+ 
+/api/Visits/CheckIn [post]
+Request Body
+{
+  "visit": {
+    "visit_id": 0,
+    "purpose": "string",
+    "visit_date": "2025-01-16",
+    "check_in": "2025-01-16T14:21:04.052Z",
+    "check_out": "2025-01-16T14:21:04.052Z",
+    "time_in": "2025-01-16T14:21:04.052Z",
+    "time_out": "2025-01-16T14:21:04.052Z",
+    "verified_visit": true,
+    "motor_vehicle_registration": "string",
+    "employee_id": 0,
+    "visitor_id": 0,
+     },
+  "pass": {
+    "gate_pass_id": 0,
+    "card_number": "string",
+    "issued_at": "2025-01-16T14:21:04.052Z",
+    "returned_at": "2025-01-16T14:21:04.052Z",
+    "status": 0,
+    "visitor_id": 0,
+  },
+  "visitorId": {
+    "id_storage_id": 0,
+    "id_type": "string",
+    "id_number": "string",
+    "stored_at": "2025-01-16T14:21:04.052Z",
+    "returned_at": "2025-01-16T14:21:04.052Z",
+    "visitor_id": 0,
+    }
+}
+Response Body
+ 
+(See Get Example)
+ 
+/api/Visits/{id}/CheckOut
+ 
+id->int
+visitorId->int
+checkOutTime->date-time
