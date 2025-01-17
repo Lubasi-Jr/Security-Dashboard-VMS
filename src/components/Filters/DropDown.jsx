@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
-const DropDown = () => {
+const DropDown = ({ setPurpose }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState("Select");
 
   const handleClick = (event) => {
     setSelected(event.target.name);
     setIsOpen(!isOpen);
+    setPurpose(event.target.name);
   };
 
   return (
@@ -35,7 +36,7 @@ const DropDown = () => {
       </button>
 
       {isOpen && (
-        <div className="z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+        <div className="z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
           <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
             <li>
               <button

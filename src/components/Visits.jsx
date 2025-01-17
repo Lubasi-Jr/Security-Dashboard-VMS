@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import VisitCard from "./Cards/VisitCard";
 import { Search } from "lucide-react";
@@ -7,6 +7,17 @@ import DatePicker from "./Filters/DatePicker";
 import DropDown from "./Filters/DropDown";
 
 const Visits = () => {
+  const [purpose, setPurpose] = useState("");
+  const [date, setDate] = useState("");
+  const [name, setName] = useState("");
+
+  //Dummy search function
+  const search = () => {
+    console.log(purpose);
+    console.log(date);
+    console.log(name);
+  };
+
   return (
     <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
       <div className="flex items-start justify-start">
@@ -14,21 +25,27 @@ const Visits = () => {
       </div>
       <div className="z-30 rounded-md w-full lg:h-[80px] h-auto  px-4 py-4 flex items-start justify-start flex-col lg:flex-row gap-3 ">
         <div className="flex flex-col gap-1 w-[200px]">
-          <DatePicker />
+          <DatePicker setDate={setDate} />
         </div>
         <div className="flex flex-col gap-1 w-[200px]">
           <p className="text-base">Purpose</p>
-          <DropDown />
+          <DropDown setPurpose={setPurpose} />
         </div>
         <div className="flex flex-col gap-1 w-[210px]">
           <p className="text-base">Name</p>
           <input
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
             type="text"
             placeholder="E.g Michael Musonda"
             className="rounded-md px-1 py-1 focus:ring-cecOrange mt-1 focus:border-cecOrange w-[200px] h-[41px]"
           />
         </div>
-        <button className="w-[41px] bg-cecOrange h-[41px] text-md mt-8 rounded-full flex items-center justify-center px-1 py-4 text-white hover:bg-white hover:text-cecOrange">
+        <button
+          onClick={search}
+          className="w-[41px] bg-cecOrange h-[41px] text-md mt-8 rounded-full flex items-center justify-center px-1 py-4 text-white hover:bg-white hover:text-cecOrange"
+        >
           <Search size={25} />
         </button>
         <h2 className="text-[25px] mt-8">OR</h2>

@@ -86,6 +86,16 @@ const VisitDetails = () => {
               N/A
             </span>
           </h1>
+          <div className="flex flex-col gap-1 w-[200px]">
+            <h1 className="truncate md:text-lg text-base  font-bold ">
+              Gate Pass Number
+            </h1>
+            <input
+              type="number"
+              placeholder=""
+              className="rounded-md px-1 py-1 focus:ring-cecOrange focus:border-cecOrange h-[41px]"
+            />
+          </div>
         </div>
         <button
           type="button"
