@@ -2,7 +2,6 @@ import { div } from "motion/react-client";
 import { Plus, User, DoorOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import VisitCard from "./Cards/VisitCard";
-import axios from "axios";
 
 const Home = () => {
   const [allVisits, setAllVisits] = useState();
