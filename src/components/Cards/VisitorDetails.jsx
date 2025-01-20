@@ -6,6 +6,7 @@ import { Save } from "lucide-react";
 import { Trash } from "lucide-react";
 import BackButton from "../Buttons/BackButton";
 import Times from "./Times";
+import { del } from "motion/react-client";
 
 const VisitorDetails = () => {
   const { visitorId } = useParams();
@@ -15,17 +16,10 @@ const VisitorDetails = () => {
   });
   const [gatePass, setGetPass] = useState();
 
-  const handleTimeChange = (event) => {
-    const { value, name } = event.target;
-    setTimes((previous) => {
-      return { ...previous, [name]: value };
-    });
-  };
-
-  const handleGatePassChange = (event) => {
-    const number = event.target.value;
-    setGetPass(number);
-  };
+  function deleteVisitor() {
+    //Dummy delete function
+    console.log(`Deleting Visitor ${visitorId}`);
+  }
 
   return (
     <div className="flex items-center justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
@@ -92,6 +86,7 @@ const VisitorDetails = () => {
           </button>*/}
           <button
             type="button"
+            onClick={deleteVisitor}
             className="text-white hover:text-cecRed border border-cecRed bg-cecRed hover:bg-white font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
           >
             <Trash size={30} />

@@ -1,9 +1,34 @@
-import React from "react";
+import React, { useReducer } from "react";
 import VisitorCard from "./Cards/VisitorCard";
 import { Search } from "lucide-react";
 import { Plus } from "lucide-react";
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "name":
+      return { ...state, name: action.payload };
+    case "nrc":
+      return { ...state, nrc: action.payload };
+    default:
+      return state;
+  }
+}
+
+const STATES = {
+  name: "",
+  nrc: "",
+  visitors: [],
+};
+
 const Visitors = () => {
+  const [states, dispatch] = useReducer(reducer, STATES);
+
+  function searchForvisitors() {
+    //Dummy search function
+    console.log(`Name ${states.name}`);
+    console.log(`NRC ${states.nrc}`);
+  }
+
   return (
     <div className="flex flex-col items-center gap-5 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
       <div className="flex items-start justify-start">
@@ -14,6 +39,10 @@ const Visitors = () => {
         <div className="flex flex-col gap-1 w-[200px]">
           <p className="text-base">Name</p>
           <input
+            value={states.name}
+            onChange={(e) => {
+              dispatch({ type: "name", payload: e.target.value });
+            }}
             type="text"
             placeholder="E.g Michael Musonda"
             className="rounded-md px-1 py-1 focus:ring-cecOrange focus:border-cecOrange h-[41px]"
@@ -22,12 +51,19 @@ const Visitors = () => {
         <div className="flex flex-col gap-1 w-[200px]">
           <p className="text-base">NRC</p>
           <input
+            value={states.nrc}
+            onChange={(e) => {
+              dispatch({ type: "nrc", payload: e.target.value });
+            }}
             type="text"
             placeholder="E.g 33564/65/1"
             className="rounded-md px-1 py-1 focus:ring-cecOrange focus:border-cecOrange h-[41px]"
           />
         </div>
-        <button className="w-[40px] bg-cecOrange h-[40px] text-md mt-6 rounded-full flex items-center justify-center px-1 py-4 text-white hover:bg-white hover:text-cecOrange">
+        <button
+          onClick={searchForvisitors}
+          className="w-[40px] bg-cecOrange h-[40px] text-md mt-6 rounded-full flex items-center justify-center px-1 py-4 text-white hover:bg-white hover:text-cecOrange"
+        >
           <Search size={25} />
         </button>
         <h2 className="text-[25px] mt-6">OR</h2>
