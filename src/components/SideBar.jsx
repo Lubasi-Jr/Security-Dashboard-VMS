@@ -14,7 +14,7 @@ const SideBar = () => {
 
   const location = useLocation();
   const isHomeActive =
-    location.pathname.startsWith("/visitor") || location.pathname === "/";
+    location.pathname.startsWith("/visits") || location.pathname === "/";
 
   const handleClose = () => {
     setIsClosed(!isClosed);
@@ -142,7 +142,7 @@ const SideBar = () => {
         <Link to={"/"}>
           <div
             className={`flex gap-1 flex-col items-center justify-center  rounded-md hover:bg-[#8B6200] px-1 py-1 cursor-pointer ${
-              isHomeActive ? "text-white" : "text-black"
+              location.pathname === "/" ? "text-white" : "text-black"
             }`}
           >
             <Home size={20} />

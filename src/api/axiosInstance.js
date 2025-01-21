@@ -1,7 +1,12 @@
 import axios from "axios";
 
+const backendURL = import.meta.env.VITE_APP_API_BASE_URL;
+
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: backendURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 // Add a request interceptor to include Authorization headers

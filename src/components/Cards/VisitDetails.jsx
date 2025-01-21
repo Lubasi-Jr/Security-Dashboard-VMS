@@ -1,22 +1,134 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import BackButton from "../Buttons/BackButton";
 import { DoorOpen } from "lucide-react";
 import { DoorClosed } from "lucide-react";
 import CheckInModal from "../Buttons/CheckInModal";
+import axiosInstance from "../../api/axiosInstance";
 
 const VisitDetails = () => {
-  const { visitId } = useParams();
+  //const { visitId } = useParams();
+  const [details, setVisitDetails] = useState();
+  const [IDdetails, setIDdetails] = useState();
+  const [idRetrieval, setIdRetrieval] = useState(false);
   const [hideModal, setHideModal] = useState(true);
   const [purpose, setPurpose] = useState("");
 
-  const checkVisitorInOrOut = () => {
+  const [gatePass, setGatePass] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      let id;
+      const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
+      const parts = path.split("/"); // Split by '/'
+      id = parts[parts.length - 1];
+
+      const visitData = getDetails(id);
+      /* if (visitData?.visitor_id) {
+        console.log(visitData.visitor_id);
+      } */
+    } catch (error) {
+      console.error("Error fetching visit or visitor details: ", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (idRetrieval) {
+      getIDStorage();
+    }
+  }, [idRetrieval]);
+
+  const getDetails = async (visit_id) => {
+    try {
+      const response = await axiosInstance.get(`/Visits/${visit_id}`);
+      setVisitDetails(response.data);
+      setIdRetrieval(true);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const getIDStorage = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/IDStorages/${details?.visitor_id}`
+      );
+      setIDdetails(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const checkVisitorInOrOut = async () => {
     if (purpose == "Check-In") {
       //Execute Check-in route
       console.log("Checking In visitor...");
+      const currentDate = new Date();
+      const isoDate = currentDate.toISOString();
+      const checkInBody = {
+        visit: {
+          purpose: details?.purpose,
+          visit_date: details?.visit_date,
+          check_in: isoDate,
+
+          verified_visit: true,
+
+          employee_id: details?.employee_id,
+          visitor_id: details?.visitor_id,
+        },
+        pass: {
+          card_number: "string",
+          issued_at: isoDate,
+
+          status: 1,
+          visitor_id: details?.visitor_id,
+        },
+        visitorId: {
+          id_type: IDdetails?.id_type,
+          id_number: IDdetails?.id_number,
+          stored_at: isoDate,
+
+          visitor_id: details?.visitor_id,
+        },
+      };
+      if (gatePass !== "") {
+        try {
+          const response = await axiosInstance.post(
+            "/Visits/CheckIn",
+            checkInBody
+          );
+          console.log("Check in successful", response.data);
+          navigate("/visits");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      //else invalid gate pass
     } else {
       //Execute Check-out route
       console.log("Checking Out visitor...");
+
+      try {
+        const response = await axiosInstance.put(
+          `/Visits/${details?.visit_id}/CheckOut`,
+          null,
+          {
+            params: {
+              visitorId: details?.visitor_id,
+              checkOutTime: new Date().toISOString(),
+            },
+          }
+        );
+
+        console.log("Visitor checked out successfully: ");
+        console.log(response.data);
+        navigate("/visits");
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     setHideModal(!hideModal);
@@ -30,9 +142,9 @@ const VisitDetails = () => {
           id="main-details"
           className="flex items-center justify-center flex-col gap-1 text-center mb-8 font-oxygen"
         >
-          <h1 className="truncate md:text-lg text-base  ">Phil Foden</h1>
-          <h1 className="font-bold text-3xl truncate">33456/65/1</h1>
-          <h2 className="text-neutral-500 text-base truncate">ABSA Bank Ltd</h2>
+          <h1 className="  font-bold text-3xl truncate">{`${details?.visitor?.first_name} ${details?.visitor?.last_name}`}</h1>
+          <h1 className="truncate md:text-lg text-base">{`${details?.visitor?.phone}`}</h1>
+          <h2 className="text-neutral-500 text-base truncate">{`${details?.visitor?.company_name}`}</h2>
         </div>
         <div
           id="generall-info"
@@ -41,74 +153,96 @@ const VisitDetails = () => {
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Visit Date:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              03/01/2025
+              {`${details?.visit_date}`}
             </span>
           </h1>
-          <h1 className="truncate md:text-lg text-base  font-bold ">
-            PhoneNo:{" "}
-            <span className="text-neutral-500 text-base truncate font-normal">
-              +260 78845321
-            </span>
-          </h1>
+
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Employee Visiting:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              Lubasi Milupi
+              {`${details?.employee?.first_name} ${details?.employee?.last_name}`}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Purpose:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              Business
+              {`${details?.purpose}`}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Check-In:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              09:32
+              {details?.check_in
+                ? new Date(details?.check_in).toLocaleDateString(undefined, {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                : "N/A"}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Time-In:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              09:40
+              {details?.time_in == "0001-01-01T00:00:00"
+                ? "N/A"
+                : new Date(details?.time_in).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Time-Out:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              N/A
+              {details?.time_in == "0001-01-01T00:00:00"
+                ? "N/A"
+                : new Date(details?.time_in).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Check-Out:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              N/A
+              {details?.check_out
+                ? new Date(details?.check_out).toLocaleDateString(undefined, {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                : "N/A"}
             </span>
           </h1>
-          <div className="flex flex-col gap-1 w-[200px]">
+          {/* <div className="flex flex-col gap-1 w-[200px]">
             <h1 className="truncate md:text-lg text-base  font-bold ">
               Gate Pass Number
             </h1>
             <input
+              onChange={(e) => {
+                setGatePass(e.target.value);
+              }}
               type="number"
               placeholder=""
               className="rounded-md px-1 py-1 focus:ring-cecOrange focus:border-cecOrange h-[41px]"
             />
-          </div>
+          </div> */}
         </div>
-        <button
+        {/* <button
           type="button"
           purpose="Check-In"
           onClick={() => {
-            setPurpose("Check-in");
+            setPurpose("Check-In");
             setHideModal(!hideModal);
           }}
           className="text-cecOrange w-[250px] hover:text-white border border-cecOrange bg-white hover:bg-cecOrange font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
         >
           <DoorOpen size={30} />
           <p>Check-in</p>
-        </button>
+        </button> */}
         <button
           purpose="Check-Out"
           onClick={() => {
@@ -116,7 +250,9 @@ const VisitDetails = () => {
             setHideModal(!hideModal);
           }}
           type="button"
-          className="text-cecRed w-[250px] hover:text-white border border-cecRed bg-white hover:bg-cecRed font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
+          className={`text-cecRed w-[250px] hover:text-white border border-cecRed bg-white hover:bg-cecRed font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center ${
+            details?.check_out ? "hidden" : ""
+          }`}
         >
           <DoorClosed size={30} />
           <p>Check-out</p>
@@ -161,6 +297,7 @@ const VisitDetails = () => {
               <button
                 onClick={() => {
                   setHideModal(!hideModal);
+                  console.log(IDdetails);
                 }}
                 type="button"
                 className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-cecOrange focus:z-10 focus:ring-4 focus:ring-cecOrange  "

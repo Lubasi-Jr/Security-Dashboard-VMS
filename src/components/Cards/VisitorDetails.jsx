@@ -1,24 +1,77 @@
-import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, CircleUser } from "lucide-react";
 import { Save } from "lucide-react";
-
+import axiosInstance from "../../api/axiosInstance";
 import { Trash } from "lucide-react";
 import BackButton from "../Buttons/BackButton";
 import Times from "./Times";
 import { del } from "motion/react-client";
 
 const VisitorDetails = () => {
-  const { visitorId } = useParams();
+  const navigate = useNavigate();
+  //Obtain NRC Number
+  const [NRC, setNRCDetails] = useState();
+  useEffect(() => {
+    let id;
+    const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
+    const parts = path.split("/"); // Split by '/'
+    id = parts[parts.length - 1];
+    getNRCNumber(id);
+  }, []);
+  async function getNRCNumber(visitor_id) {
+    try {
+      const response = await axiosInstance.get(`/IDStorages/${visitor_id}`);
+      setNRCDetails(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    let id;
+    const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
+    const parts = path.split("/"); // Split by '/'
+    id = parts[parts.length - 1];
+    getDetails(id);
+  }, []);
+
+  const [details, setDetails] = useState("");
+
+  const getDetails = async (visitor_id) => {
+    try {
+      const response = await axiosInstance.get(`/Visitors/${visitor_id}`);
+      setDetails(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const [times, setTimes] = useState({
     checkIn: "00:00",
     checkOut: "00:00",
   });
   const [gatePass, setGetPass] = useState();
 
-  function deleteVisitor() {
+  async function deleteVisitor() {
     //Dummy delete function
-    console.log(`Deleting Visitor ${visitorId}`);
+
+    console.log(`Deleting Visitor ${details?.visitor_id}`);
+    console.log(details);
+
+    /* try {
+      const response = await axiosInstance.delete(
+        `/Visitors/${details?.visitor_id}`
+      );
+      console.log("Visitor has been deleted");
+      navigate("/visitor")
+      
+    } catch (error) {
+      console.log(error)
+      
+    } */
+
+    //console.log(details);
   }
 
   return (
@@ -29,9 +82,9 @@ const VisitorDetails = () => {
           id="main-details"
           className="flex items-center justify-center flex-col gap-1 text-center mb-8 font-oxygen"
         >
-          <h1 className="truncate md:text-lg text-base  ">Phil Foden</h1>
-          <h1 className="font-bold text-3xl truncate">33456/65/1</h1>
-          <h2 className="text-neutral-500 text-base truncate">ABSA Bank Ltd</h2>
+          <h1 className="truncate md:text-lg text-base  ">{`${details?.first_name} ${details?.last_name}`}</h1>
+          <h1 className="font-bold text-3xl truncate">{`NRC: ${NRC?.id_number}`}</h1>
+          <h2 className="text-neutral-500 text-base truncate">{`Company Name: ${details?.company_name}`}</h2>
         </div>
         <div
           id="generall-info"
@@ -40,13 +93,31 @@ const VisitorDetails = () => {
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Created:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              15/01/2025
+              {details?.created_at
+                ? new Date(details?.created_at).toLocaleDateString(undefined, {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                : "N/A"}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             PhoneNo:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              +260 78845321
+              {`${details?.phone}`}
+            </span>
+          </h1>
+          <h1 className="truncate md:text-lg text-base  font-bold ">
+            Address:{" "}
+            <span className="text-neutral-500 text-base truncate font-normal">
+              {`${details?.address}`}
+            </span>
+          </h1>
+          <h1 className="truncate md:text-lg text-base  font-bold ">
+            Email:{" "}
+            <span className="text-neutral-500 text-base truncate font-normal">
+              {`${details?.email}`}
             </span>
           </h1>
         </div>

@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import VisitCard from "./Cards/VisitCard";
 import { Search } from "lucide-react";
 import { Plus } from "lucide-react";
 import DatePicker from "./Filters/DatePicker";
 import DropDown from "./Filters/DropDown";
+import axiosInstance from "../api/axiosInstance";
 
 const Visits = () => {
+  const [allVisits, setVisits] = useState(null);
+  useEffect(() => {
+    getVisits();
+  }, []);
+
+  async function getVisits() {
+    try {
+      const response = await axiosInstance.get("/Visits");
+      setVisits(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const [purpose, setPurpose] = useState("");
   const [date, setDate] = useState("");
   const [name, setName] = useState("");
@@ -55,7 +70,13 @@ const Visits = () => {
       </div>
 
       <div className="rounded-md w-full h-full bg-[#F5F5F5] px-4 py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-        <VisitCard id={1} />
+        {allVisits ? (
+          allVisits.map((visit, index) => (
+            <VisitCard key={index} id={visit?.visit_id} visit={visit} />
+          ))
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,9 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import VisitorCard from "./Cards/VisitorCard";
 import { Search } from "lucide-react";
 import { Plus } from "lucide-react";
+import axiosInstance from "../api/axiosInstance";
+import { div } from "motion/react-client";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -21,12 +23,27 @@ const STATES = {
 };
 
 const Visitors = () => {
+  const [allVisitors, setAllVisitors] = useState([]);
+  useEffect(() => {
+    getVisitors();
+  }, []);
+
+  const getVisitors = async () => {
+    try {
+      const response = await axiosInstance.get("/Visitors");
+      setAllVisitors(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const [states, dispatch] = useReducer(reducer, STATES);
 
   function searchForvisitors() {
     //Dummy search function
     console.log(`Name ${states.name}`);
     console.log(`NRC ${states.nrc}`);
+    console.log(allVisitors);
+    console.log(`Visitor ID is ${allVisitors[0].visitor_id}`);
   }
 
   return (
@@ -73,7 +90,17 @@ const Visitors = () => {
       </div>
 
       <div className="rounded-md w-full h-full bg-[#F5F5F5] px-4 py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-        <VisitorCard id={1} />
+        {allVisitors ? (
+          allVisitors.map((visitor, index) => (
+            <VisitorCard
+              key={index}
+              id={visitor?.visitor_id}
+              visitor={visitor}
+            />
+          ))
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );

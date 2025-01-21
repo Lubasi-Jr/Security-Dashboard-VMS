@@ -2,21 +2,22 @@ import { div } from "motion/react-client";
 import { Plus, User, DoorOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import VisitCard from "./Cards/VisitCard";
+import axiosInstance from "../api/axiosInstance";
 
 const Home = () => {
-  const [allVisits, setAllVisits] = useState();
-  /* useEffect(() => {
+  const [allVisits, setAllVisits] = useState(null);
+  useEffect(() => {
     getVisits();
   }, []);
 
   const getVisits = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/visits");
+      const response = await axiosInstance.get("/Visits");
       setAllVisits(response.data);
     } catch (error) {
       console.log(error);
     }
-  }; */
+  };
 
   return (
     <div className="flex flex-col items-center gap-3 justify-center text-3xl h-full bg-[#F5F5F5] md:pl-24 md:pt-8 px-20 pt-8 pb-28 md:pb-2">
@@ -39,7 +40,13 @@ const Home = () => {
 
       <div className="rounded-md w-full h-full bg-[#F5F5F5] px-4 py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         {/* Visitor Cards For Today */}
-        <VisitCard id={1} />
+        {allVisits ? (
+          allVisits.map((visit, index) => (
+            <VisitCard key={index} id={visit?.visit_id} visit={visit} />
+          ))
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
