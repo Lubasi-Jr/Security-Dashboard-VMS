@@ -11,6 +11,7 @@ import Visits from "./components/Visits";
 import VisitorDetails from "./components/Cards/VisitorDetails";
 import Home from "./components/Home";
 import VisitDetails from "./components/Cards/VisitDetails";
+import CheckInVisitor from "./components/CheckInVisitor";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
 
         <Route path="/visitor/:visitorId" element={<VisitorDetails />} />
         <Route path="/visits/:visitId" element={<VisitDetails />} />
+        <Route path="/checkIn/:visitorId" element={<CheckInVisitor />} />
       </Routes>
     </Router>
   );

@@ -7,6 +7,7 @@ import { Trash } from "lucide-react";
 import BackButton from "../Buttons/BackButton";
 import Times from "./Times";
 import { del } from "motion/react-client";
+import { DoorOpen } from "lucide-react";
 
 const VisitorDetails = () => {
   const navigate = useNavigate();
@@ -148,13 +149,15 @@ const VisitorDetails = () => {
           id="save-button"
           className="flex gap-6 items-end justify-end mb-10"
         >
-          {/*<button
-            type="button"
-            className="text-white hover:text-cecOrange border border-cecOrange bg-cecOrange hover:bg-white font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
-          >
-            <Save size={30} />
-            <p>Save</p>
-          </button>*/}
+          <Link to={`/checkIn/${details?.visitor_id}`}>
+            <button
+              type="button"
+              className="text-white hover:text-cecOrange border border-cecOrange bg-cecOrange hover:bg-white font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
+            >
+              <DoorOpen size={30} />
+              <p>Check-In</p>
+            </button>
+          </Link>
           <button
             type="button"
             onClick={deleteVisitor}

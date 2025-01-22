@@ -3,6 +3,7 @@ import { Plus, User, DoorOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import VisitCard from "./Cards/VisitCard";
 import axiosInstance from "../api/axiosInstance";
+import { RefreshCw } from "lucide-react";
 
 const Home = () => {
   const [allVisits, setAllVisits] = useState(null);
@@ -33,8 +34,8 @@ const Home = () => {
           type="button"
           className="text-cecOrange w-1/2 hover:text-white border border-cecOrange bg-white hover:bg-cecOrange  font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
         >
-          <DoorOpen size={30} />
-          <p>New Visit</p>
+          <RefreshCw size={30} />
+          <p>Refresh</p>
         </button>
       </div>
 
@@ -45,7 +46,12 @@ const Home = () => {
             <VisitCard key={index} id={visit?.visit_id} visit={visit} />
           ))
         ) : (
-          <div></div>
+          <div className="col-span-1 md:col-span-3 lg:col-span-4 flex flex-col font-raleway ">
+            <h1>No Visits to display</h1>
+            <p className="text-md text-cecOrange font-raleway">
+              Click refresh or Come back later
+            </p>
+          </div>
         )}
       </div>
     </div>
