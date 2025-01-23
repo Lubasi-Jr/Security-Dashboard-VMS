@@ -9,12 +9,10 @@ import axiosInstance from "../../api/axiosInstance";
 const VisitDetails = () => {
   //const { visitId } = useParams();
   const [details, setVisitDetails] = useState();
-  const [IDdetails, setIDdetails] = useState();
-  const [idRetrieval, setIdRetrieval] = useState(false);
+
   const [hideModal, setHideModal] = useState(true);
   const [purpose, setPurpose] = useState("");
 
-  const [gatePass, setGatePass] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,17 +31,11 @@ const VisitDetails = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (idRetrieval) {
-      getIDStorage();
-    }
-  }, [idRetrieval]);
-
   const getDetails = async (visit_id) => {
     try {
       const response = await axiosInstance.get(`/Visits/${visit_id}`);
       setVisitDetails(response.data);
-      setIdRetrieval(true);
+
       return response.data;
     } catch (error) {
       console.log(error);
@@ -51,84 +43,27 @@ const VisitDetails = () => {
     }
   };
 
-  const getIDStorage = async () => {
+  const checkVisitorOut = async () => {
+    //Execute Check-out route
+    console.log("Checking Out visitor...");
+
     try {
-      const response = await axiosInstance.get(
-        `/IDStorages/${details?.visitor_id}`
+      const response = await axiosInstance.put(
+        `/Visits/${details?.visit_id}/CheckOut`,
+        null,
+        {
+          params: {
+            visitorId: details?.visitor_id,
+            checkOutTime: new Date().toISOString(),
+          },
+        }
       );
-      setIDdetails(response.data);
+
+      console.log("Visitor checked out successfully: ");
+      console.log(response.data);
+      navigate("/visits");
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const checkVisitorInOrOut = async () => {
-    if (purpose == "Check-In") {
-      //Execute Check-in route
-      console.log("Checking In visitor...");
-      const currentDate = new Date();
-      const isoDate = currentDate.toISOString();
-      const checkInBody = {
-        visit: {
-          purpose: details?.purpose,
-          visit_date: details?.visit_date,
-          check_in: isoDate,
-
-          verified_visit: true,
-
-          employee_id: details?.employee_id,
-          visitor_id: details?.visitor_id,
-        },
-        pass: {
-          card_number: "string",
-          issued_at: isoDate,
-
-          status: 1,
-          visitor_id: details?.visitor_id,
-        },
-        visitorId: {
-          id_type: IDdetails?.id_type,
-          id_number: IDdetails?.id_number,
-          stored_at: isoDate,
-
-          visitor_id: details?.visitor_id,
-        },
-      };
-      if (gatePass !== "") {
-        try {
-          const response = await axiosInstance.post(
-            "/Visits/CheckIn",
-            checkInBody
-          );
-          console.log("Check in successful", response.data);
-          navigate("/visits");
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      //else invalid gate pass
-    } else {
-      //Execute Check-out route
-      console.log("Checking Out visitor...");
-
-      try {
-        const response = await axiosInstance.put(
-          `/Visits/${details?.visit_id}/CheckOut`,
-          null,
-          {
-            params: {
-              visitorId: details?.visitor_id,
-              checkOutTime: new Date().toISOString(),
-            },
-          }
-        );
-
-        console.log("Visitor checked out successfully: ");
-        console.log(response.data);
-        navigate("/visits");
-      } catch (error) {
-        console.log(error);
-      }
     }
 
     setHideModal(!hideModal);
@@ -289,7 +224,7 @@ const VisitDetails = () => {
             <div className="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
               <button
                 type="button"
-                onClick={checkVisitorInOrOut}
+                onClick={checkVisitorOut}
                 className="text-white bg-cecOrange hover:bg-[#8A5F00] focus:ring-4 focus:outline-none focus:ring-[#8A5F00] font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               >
                 Yes
@@ -297,7 +232,6 @@ const VisitDetails = () => {
               <button
                 onClick={() => {
                   setHideModal(!hideModal);
-                  console.log(IDdetails);
                 }}
                 type="button"
                 className="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-cecOrange focus:z-10 focus:ring-4 focus:ring-cecOrange  "
