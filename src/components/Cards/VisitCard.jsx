@@ -13,23 +13,6 @@ const VisitCard = ({ id, visit }) => {
 
   const [idDetails, setIdDetails] = useState("");
 
-  useEffect(() => {
-    //console.log("Visit:-");
-    //console.log(visit);
-    getIdDetails();
-  }, []);
-
-  async function getIdDetails() {
-    try {
-      const response = await axiosInstance.get(
-        `/IDStorages/${visit?.visitor?.visitor_id}`
-      );
-      setIdDetails(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   return (
     <div
       id="child"
@@ -39,7 +22,7 @@ const VisitCard = ({ id, visit }) => {
         <h1 className="truncate md:text-lg text-base  ">
           {`${visit?.visitor?.first_name} ${visit?.visitor?.last_name}`}
         </h1>
-        <h1 className="font-bold text-3xl truncate">{`ID: ${idDetails?.id_number}`}</h1>
+        <h1 className="font-bold text-3xl truncate">{`ID: ${visit?.visitor?.id_number}`}</h1>
         <h2 className="text-neutral-500 text-base truncate">
           Employee:{" "}
           {`${visit?.employee?.first_name} ${visit?.employee?.last_name}`}

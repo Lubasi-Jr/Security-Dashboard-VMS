@@ -11,23 +11,8 @@ import { DoorOpen } from "lucide-react";
 
 const VisitorDetails = () => {
   const navigate = useNavigate();
-  //Obtain NRC Number
-  const [NRC, setNRCDetails] = useState();
-  useEffect(() => {
-    let id;
-    const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
-    const parts = path.split("/"); // Split by '/'
-    id = parts[parts.length - 1];
-    getNRCNumber(id);
-  }, []);
-  async function getNRCNumber(visitor_id) {
-    try {
-      const response = await axiosInstance.get(`/IDStorages/${visitor_id}`);
-      setNRCDetails(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //Obtain Details
+  const [details, setDetails] = useState("");
 
   useEffect(() => {
     let id;
@@ -36,8 +21,6 @@ const VisitorDetails = () => {
     id = parts[parts.length - 1];
     getDetails(id);
   }, []);
-
-  const [details, setDetails] = useState("");
 
   const getDetails = async (visitor_id) => {
     try {
@@ -84,7 +67,7 @@ const VisitorDetails = () => {
           className="flex items-center justify-center flex-col gap-1 text-center mb-8 font-oxygen"
         >
           <h1 className="truncate md:text-lg text-base  ">{`${details?.first_name} ${details?.last_name}`}</h1>
-          <h1 className="font-bold text-3xl truncate">{`NRC: ${NRC?.id_number}`}</h1>
+          <h1 className="font-bold text-3xl truncate">{`NRC: ${details?.id_number}`}</h1>
           <h2 className="text-neutral-500 text-base truncate">{`Company Name: ${details?.company_name}`}</h2>
         </div>
         <div

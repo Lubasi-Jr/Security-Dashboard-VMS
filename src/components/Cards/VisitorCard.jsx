@@ -4,19 +4,6 @@ import { Link } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 
 const VisitorCard = ({ id, visitor }) => {
-  const [NRC, setNRCDetails] = useState();
-  useEffect(() => {
-    getNRCNumber(id);
-  }, []);
-
-  async function getNRCNumber(visitor_id) {
-    try {
-      const response = await axiosInstance.get(`/IDStorages/${visitor_id}`);
-      setNRCDetails(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
   return (
     <div
       id="child"
@@ -24,7 +11,7 @@ const VisitorCard = ({ id, visitor }) => {
     >
       <div className="flex flex-col gap-1 font-oxygen">
         <h1 className="truncate md:text-lg text-base  ">{`${visitor?.first_name} ${visitor?.last_name}`}</h1>
-        <h1 className="font-bold text-3xl truncate">{`ID: ${NRC?.id_number}`}</h1>
+        <h1 className="font-bold text-3xl truncate">{`ID: ${visitor?.id_number}`}</h1>
         <h2 className="text-neutral-500 text-base truncate">{`Company Name: ${visitor?.company_name}`}</h2>
       </div>
       <div>

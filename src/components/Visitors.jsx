@@ -3,6 +3,7 @@ import VisitorCard from "./Cards/VisitorCard";
 import { Search } from "lucide-react";
 import { Plus } from "lucide-react";
 import axiosInstance from "../api/axiosInstance";
+import { ClipLoader } from "react-spinners";
 import { div } from "motion/react-client";
 
 function reducer(state, action) {
@@ -23,22 +24,26 @@ const STATES = {
 };
 
 const Visitors = () => {
-  const [allVisitors, setAllVisitors] = useState([]);
+  const [allVisitors, setAllVisitors] = useState();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     getVisitors();
   }, []);
 
   const getVisitors = async () => {
+    setLoading(true);
     try {
       const response = await axiosInstance.get("/Visitors");
       setAllVisitors(response.data);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
   const [states, dispatch] = useReducer(reducer, STATES);
 
-  function searchForvisitors() {
+  async function searchForvisitors() {
     //Dummy search function
     console.log(`Name ${states.name}`);
     console.log(`NRC ${states.nrc}`);
@@ -83,30 +88,46 @@ const Visitors = () => {
         >
           <Search size={25} />
         </button>
-        {/* <h2 className="text-[25px] mt-6">OR</h2>
-        <button className="border border-cecOrange rounded-md px-2 py-2 w-[170px] text-base mt-6 font-semibold text-center h-[41px] text-cecOrange hover:text-white hover:bg-cecOrange">
-          Create New Visitor
-        </button> */}
+        <h2 className="text-[25px] mt-6">OR</h2>
+        <button
+          onClick={() => {
+            getVisitors();
+          }}
+          className="border border-cecOrange rounded-md px-2 py-2 w-[170px] text-base mt-6 font-semibold text-center h-[41px] text-cecOrange hover:text-white hover:bg-cecOrange"
+        >
+          Reset Fields
+        </button>
       </div>
-
-      <div className="rounded-md w-full h-full bg-[#F5F5F5] px-4 py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-        {allVisitors ? (
-          allVisitors.map((visitor, index) => (
-            <VisitorCard
-              key={index}
-              id={visitor?.visitor_id}
-              visitor={visitor}
-            />
-          ))
-        ) : (
-          <div className="col-span-1 md:col-span-3 lg:col-span-4 flex flex-col font-raleway ">
-            <h1>No Visits that match this criteria</h1>
-            <p className="text-md text-cecOrange font-raleway">
-              Adjust filters and search again
-            </p>
-          </div>
-        )}
-      </div>
+      {/* Conditional spinner */}
+      {loading ? (
+        <div className="lg:w-1/2 w-full flex flex-col lg:flex-row lg:gap-9 gap-2 items-center justify-center px-4 py-2">
+          <ClipLoader
+            color="#AD7900"
+            loading={loading}
+            size={150}
+            aria-label="Fetching Visits"
+          />
+        </div>
+      ) : (
+        <div className="rounded-md w-full h-full bg-[#F5F5F5] px-4 py-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+          {allVisitors ? (
+            allVisitors.map((visitor, index) => (
+              <VisitorCard
+                key={index}
+                id={visitor?.visitor_id}
+                visitor={visitor}
+              />
+            ))
+          ) : (
+            <div className="col-span-1 md:col-span-3 lg:col-span-4 flex flex-col font-raleway ">
+              <h1>No Visitors to display</h1>
+              <p className="text-md text-cecOrange font-raleway">
+                Adjust filters and search again OR Reset
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
