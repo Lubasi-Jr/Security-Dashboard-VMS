@@ -33,7 +33,7 @@ const SideBar = () => {
       >
         <div
           id="logo"
-          className="h-28 w-28 flex items-center gap-28 justify-between"
+          className={`h-28 w-28 flex items-center gap-28 justify-between  `}
         >
           <img
             src="/CEC_LOGO.png"
