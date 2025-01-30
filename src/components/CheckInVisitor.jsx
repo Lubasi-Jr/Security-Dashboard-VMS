@@ -72,8 +72,6 @@ const CheckInVisitor = () => {
         visitor_id: details?.visitor_id,
       },
       visitorId: {
-        id_type: details?.id_type,
-        id_number: details?.id_number,
         stored_at: new Date().toISOString(),
 
         visitor_id: details?.visitor_id,

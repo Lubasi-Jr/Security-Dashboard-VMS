@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const DropDown = ({ setPurpose }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState("Select");
+  const [selected, setSelected] = useState("");
 
   const handleClick = (event) => {
     setSelected(event.target.name);
@@ -67,7 +67,7 @@ const DropDown = ({ setPurpose }) => {
             </li>
             <li>
               <button
-                name="Select"
+                name=""
                 onClick={handleClick}
                 className="block px-4 py-2 hover:bg-gray-100 text-neutral-600"
               >

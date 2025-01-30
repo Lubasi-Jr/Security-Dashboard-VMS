@@ -39,7 +39,7 @@ const Visits = () => {
     //console.log(name);
 
     try {
-      const response = await axiosInstance.get("/Visits/Search", null, {
+      const response = await axiosInstance.get("/Visits/Search", {
         params: {
           purpose: purpose,
           date: date,

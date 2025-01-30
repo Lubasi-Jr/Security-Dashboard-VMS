@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Details from "../Buttons/Details";
 import { Link } from "react-router-dom";
-import axiosInstance from "../../api/axiosInstance";
 
 const VisitCard = ({ id, visit }) => {
-  /*  const { visitor, visitor_id, employee, visit_date } = visit;
-
-
-
-  const employeeBeingVisited = `${employee?.first_name} ${employee?.last_name}`;
-  const visitorFullName = `${visitor?.first_name} ${visitor?.last_name}`; */
-
-  const [idDetails, setIdDetails] = useState("");
-
   return (
     <div
       id="child"

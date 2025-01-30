@@ -1,12 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, CircleUser } from "lucide-react";
-import { Save } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../api/axiosInstance";
 import { Trash } from "lucide-react";
 import BackButton from "../Buttons/BackButton";
-import Times from "./Times";
-import { del } from "motion/react-client";
 import { DoorOpen } from "lucide-react";
 
 const VisitorDetails = () => {
@@ -31,29 +27,23 @@ const VisitorDetails = () => {
     }
   };
 
-  const [times, setTimes] = useState({
-    checkIn: "00:00",
-    checkOut: "00:00",
-  });
-  const [gatePass, setGetPass] = useState();
-
   async function deleteVisitor() {
     //Dummy delete function
 
     console.log(`Deleting Visitor ${details?.visitor_id}`);
     console.log(details);
 
-    /* try {
+    try {
       const response = await axiosInstance.delete(
         `/Visitors/${details?.visitor_id}`
       );
       console.log("Visitor has been deleted");
-      navigate("/visitor")
-      
+      console.log(response.data);
+
+      navigate("/visitor");
     } catch (error) {
-      console.log(error)
-      
-    } */
+      console.log(error);
+    }
 
     //console.log(details);
   }
@@ -105,29 +95,7 @@ const VisitorDetails = () => {
             </span>
           </h1>
         </div>
-        <div
-          id="times"
-          className="flex flex-col gap-1 items-start justify-start mb-8 font-oxygen"
-        >
-          {/*<div>
-            <label
-              for="number-input"
-              class="block mb-2 text-base md:text-lg font-bold "
-            >
-              Gate Pass Number:
-            </label>
-            <input
-              type="number"
-              id="number-input"
-              aria-describedby="helper-text-explanation"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 focus:ring-cecOrange focus:border-cecOrange"
-              value={gatePass}
-              onChange={handleGatePassChange}
-            />
-          </div>*/}
 
-          {/*<Times times={times} handleTimeChange={handleTimeChange} />*/}
-        </div>
         <div
           id="save-button"
           className="flex gap-6 items-end justify-end mb-10"

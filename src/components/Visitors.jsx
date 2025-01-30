@@ -44,11 +44,22 @@ const Visitors = () => {
   const [states, dispatch] = useReducer(reducer, STATES);
 
   async function searchForvisitors() {
-    //Dummy search function
-    console.log(`Name ${states.name}`);
+    // search function
     console.log(`NRC ${states.nrc}`);
-    console.log(allVisitors);
-    console.log(`Visitor ID is ${allVisitors[0].visitor_id}`);
+
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get("/Visitors/Search", {
+        params: {
+          idNumber: states.nrc,
+        },
+      });
+      setAllVisitors(response.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
   }
 
   return (
@@ -58,7 +69,7 @@ const Visitors = () => {
       </div>
 
       <div className=" rounded-md w-full lg:h-[80px] h-auto  px-4 py-4 flex lg:flex-row lg:items-start lg:justify-start gap-3 flex-col justify-start items-start ">
-        <div className="flex flex-col gap-1 w-[200px]">
+        {/* <div className="flex flex-col gap-1 w-[200px]">
           <p className="text-base">Name</p>
           <input
             value={states.name}
@@ -69,7 +80,7 @@ const Visitors = () => {
             placeholder="E.g Michael Musonda"
             className="rounded-md px-1 py-1 focus:ring-cecOrange focus:border-cecOrange h-[41px]"
           />
-        </div>
+        </div> */}
         <div className="flex flex-col gap-1 w-[200px]">
           <p className="text-base">NRC</p>
           <input

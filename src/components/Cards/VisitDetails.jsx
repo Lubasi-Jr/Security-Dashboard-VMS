@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BackButton from "../Buttons/BackButton";
-import { DoorOpen } from "lucide-react";
 import { DoorClosed } from "lucide-react";
-import CheckInModal from "../Buttons/CheckInModal";
 import axiosInstance from "../../api/axiosInstance";
 
 const VisitDetails = () => {
-  //const { visitId } = useParams();
   const [details, setVisitDetails] = useState();
-
   const [hideModal, setHideModal] = useState(true);
   const [purpose, setPurpose] = useState("");
 
@@ -17,15 +13,13 @@ const VisitDetails = () => {
 
   useEffect(() => {
     try {
+      //Obtain Id from parameters
       let id;
       const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
       const parts = path.split("/"); // Split by '/'
       id = parts[parts.length - 1];
 
       const visitData = getDetails(id);
-      /* if (visitData?.visitor_id) {
-        console.log(visitData.visitor_id);
-      } */
     } catch (error) {
       console.error("Error fetching visit or visitor details: ", error);
     }
@@ -46,6 +40,7 @@ const VisitDetails = () => {
   const checkVisitorOut = async () => {
     //Execute Check-out route
     console.log("Checking Out visitor...");
+    setHideModal(!hideModal);
 
     try {
       const response = await axiosInstance.put(
@@ -65,8 +60,6 @@ const VisitDetails = () => {
     } catch (error) {
       console.log(error);
     }
-
-    setHideModal(!hideModal);
   };
 
   return (
@@ -108,10 +101,11 @@ const VisitDetails = () => {
             Check-In:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
               {details?.check_in
-                ? new Date(details?.check_in).toLocaleDateString(undefined, {
+                ? new Date(details?.check_in).toLocaleTimeString("en-US", {
                     hour: "2-digit",
                     minute: "2-digit",
                     hour12: true,
+                    timeZone: "Africa/Lusaka",
                   })
                 : "N/A"}
             </span>
@@ -119,24 +113,32 @@ const VisitDetails = () => {
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Time-In:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              {details?.time_in == "0001-01-01T00:00:00"
+              {details?.time_in === null
                 ? "N/A"
-                : new Date(details?.time_in).toLocaleDateString(undefined, {
+                : new Date(details?.time_in).toLocaleString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                    timeZone: "Africa/Lusaka",
                   })}
             </span>
           </h1>
           <h1 className="truncate md:text-lg text-base  font-bold ">
             Time-Out:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
-              {details?.time_in == "0001-01-01T00:00:00"
+              {details?.time_out === null
                 ? "N/A"
-                : new Date(details?.time_in).toLocaleDateString(undefined, {
+                : new Date(details?.time_in).toLocaleString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                    timeZone: "Africa/Lusaka",
                   })}
             </span>
           </h1>
@@ -144,7 +146,11 @@ const VisitDetails = () => {
             Check-Out:{" "}
             <span className="text-neutral-500 text-base truncate font-normal">
               {details?.check_out
-                ? new Date(details?.check_out).toLocaleDateString(undefined, {
+                ? new Date(
+                    new Date(details?.check_out).toLocaleString("en-US", {
+                      timeZone: "Africa/Lusaka",
+                    })
+                  ).toLocaleTimeString(undefined, {
                     hour: "2-digit",
                     minute: "2-digit",
                     hour12: true,
@@ -152,32 +158,8 @@ const VisitDetails = () => {
                 : "N/A"}
             </span>
           </h1>
-          {/* <div className="flex flex-col gap-1 w-[200px]">
-            <h1 className="truncate md:text-lg text-base  font-bold ">
-              Gate Pass Number
-            </h1>
-            <input
-              onChange={(e) => {
-                setGatePass(e.target.value);
-              }}
-              type="number"
-              placeholder=""
-              className="rounded-md px-1 py-1 focus:ring-cecOrange focus:border-cecOrange h-[41px]"
-            />
-          </div> */}
         </div>
-        {/* <button
-          type="button"
-          purpose="Check-In"
-          onClick={() => {
-            setPurpose("Check-In");
-            setHideModal(!hideModal);
-          }}
-          className="text-cecOrange w-[250px] hover:text-white border border-cecOrange bg-white hover:bg-cecOrange font-medium rounded-lg text-sm md:text-md lg:text-lg px-5 py-2.5 text-center me-2 mb-2 flex gap-1 justify-center items-center"
-        >
-          <DoorOpen size={30} />
-          <p>Check-in</p>
-        </button> */}
+
         <button
           purpose="Check-Out"
           onClick={() => {
