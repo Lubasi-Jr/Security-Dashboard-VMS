@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Details from "../Buttons/Details";
 import { Link } from "react-router-dom";
 
 const VisitorCard = ({ id, visitor }) => {
+  useEffect(() => {
+    if (visitor && id) {
+      sessionStorage.setItem(`visitor${id}`, JSON.stringify(visitor));
+    }
+  }, [visitor, id]);
+
   return (
     <div
       id="child"

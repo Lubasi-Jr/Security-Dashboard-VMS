@@ -10,24 +10,28 @@ import { DoorOpen } from "lucide-react";
 const VisitorDetails = () => {
   const navigate = useNavigate();
   //Obtain Details
-  const [details, setDetails] = useState("");
+  const [details, setDetails] = useState({});
 
   useEffect(() => {
     let id;
     const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
     const parts = path.split("/"); // Split by '/'
     id = parts[parts.length - 1];
-    getDetails(id);
+
+    if (id) {
+      const storedVisitor = sessionStorage.getItem(`visitor${id}`);
+      setDetails(storedVisitor ? JSON.parse(storedVisitor) : {});
+    }
   }, []);
 
-  const getDetails = async (visitor_id) => {
+  /* const getDetails = async (visitor_id) => {
     try {
       const response = await axiosInstance.get(`/Visitors/${visitor_id}`);
       setDetails(response.data);
     } catch (error) {
       console.log(error);
     }
-  };
+  }; */
 
   async function deleteVisitor() {
     //Dummy delete function
@@ -41,6 +45,9 @@ const VisitorDetails = () => {
       );
       console.log("Visitor has been deleted");
       console.log(response.data);
+
+      // Remove visitor from sessionStorage
+      sessionStorage.removeItem(`visitor${details?.visitor_id}`);
 
       navigate("/visitor");
     } catch (error) {

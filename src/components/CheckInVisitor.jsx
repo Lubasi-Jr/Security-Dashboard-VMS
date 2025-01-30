@@ -18,17 +18,22 @@ const CheckInVisitor = () => {
     const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
     const parts = path.split("/"); // Split by '/'
     id = parts[parts.length - 1];
-    getVisitorDetails(id);
+    //getVisitorDetails(id);
+
+    if (id) {
+      const storedVisitor = sessionStorage.getItem(`visitor${id}`);
+      setDetails(storedVisitor ? JSON.parse(storedVisitor) : {});
+    }
   }, []);
 
-  async function getVisitorDetails(visitor_id) {
+  /* async function getVisitorDetails(visitor_id) {
     try {
       const response = await axiosInstance.get(`/Visitors/${visitor_id}`);
       setDetails(response.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  } */
 
   function setPurposeFunction(p) {
     setPurpose(p);
