@@ -5,27 +5,26 @@ import { DoorClosed } from "lucide-react";
 import axiosInstance from "../../api/axiosInstance";
 
 const VisitDetails = () => {
-  const [details, setVisitDetails] = useState();
+  const [details, setVisitDetails] = useState({});
   const [hideModal, setHideModal] = useState(true);
   const [purpose, setPurpose] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      //Obtain Id from parameters
-      let id;
-      const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
-      const parts = path.split("/"); // Split by '/'
-      id = parts[parts.length - 1];
+    //Obtain Id from parameters
+    let id;
+    const path = window.location.pathname; // Get the full path, e.g., '/visitor/1'
+    const parts = path.split("/"); // Split by '/'
+    id = parts[parts.length - 1];
 
-      const visitData = getDetails(id);
-    } catch (error) {
-      console.error("Error fetching visit or visitor details: ", error);
+    if (id) {
+      const storedVisitor = sessionStorage.getItem(`visit${id}`);
+      setVisitDetails(storedVisitor ? JSON.parse(storedVisitor) : {});
     }
   }, []);
 
-  const getDetails = async (visit_id) => {
+  /* const getDetails = async (visit_id) => {
     try {
       const response = await axiosInstance.get(`/Visits/${visit_id}`);
       setVisitDetails(response.data);
@@ -35,7 +34,7 @@ const VisitDetails = () => {
       console.log(error);
       throw error;
     }
-  };
+  }; */
 
   const checkVisitorOut = async () => {
     //Execute Check-out route
