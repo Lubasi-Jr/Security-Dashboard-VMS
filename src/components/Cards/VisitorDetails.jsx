@@ -5,6 +5,8 @@ import { Trash } from "lucide-react";
 import BackButton from "../Buttons/BackButton";
 import { DoorOpen } from "lucide-react";
 
+//Need to not make too many API calls
+
 const VisitorDetails = () => {
   const navigate = useNavigate();
   //Obtain Details
